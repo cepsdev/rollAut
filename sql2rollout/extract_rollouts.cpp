@@ -62,7 +62,7 @@ int main(int argc,char* argv[])
     std::string passwd = "";
     std::string timestamp = "";
     std::string sapcode;
-    std::string database{"rollout"};
+    std::string database{"rollAut"};
     std::string job_name{};
 
     bool check_for_empty_resultset_only = true;
@@ -95,10 +95,14 @@ int main(int argc,char* argv[])
       auto driver = get_driver_instance();
       std::shared_ptr<sql::Connection> con { driver->connect("tcp://"+hostname, user, passwd) };
       con->setSchema(database);
-      rollaut::db::rollout::ceps::dump_step_types(cout,con);
-      rollaut::db::rollout::ceps::dump_active_rollouts(cout,con,timestamp);
-      rollaut::db::rollout::ceps::dump_active_rollout_stores(cout,con,timestamp);
-      rollaut::db::rollout::ceps::dump_active_rollout_steps(cout,con,timestamp);
+      std::map<int,rollaut::db::rollout::ceps::step_type_t> step_details;
+      std::vector<std::tuple<std::uint64_t,std::string,std::string,time_t>> active_rollouts_result;
+      rollaut::db::rollout::ceps::stores_t stores;
+      rollaut::db::rollout::ceps::steps_t steps;
+      rollaut::db::rollout::ceps::dump_step_types(cout,step_details,con);
+      rollaut::db::rollout::ceps::dump_active_rollouts(con,timestamp,active_rollouts_result);
+      rollaut::db::rollout::ceps::dump_active_rollout_stores(stores,con,timestamp);
+      rollaut::db::rollout::ceps::dump_active_rollout_steps(steps,con,timestamp);
     } catch (sql::SQLException &e) {
       cerr << "***Fatal: " << e.what()<< " (MySQL error code: " << e.getErrorCode() << ", SQLState: " << e.getSQLState() << " )" << endl;
       return - EXIT_FAILURE;
