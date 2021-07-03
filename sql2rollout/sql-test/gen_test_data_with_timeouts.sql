@@ -1,5 +1,5 @@
 
-use rollout;
+use rollAut;
 
 delete from rollout_step_type;
 insert INTO rollout_step_type (id,description,job_check,job_run) values(0,"step 0","job_check_0","job_run_0");

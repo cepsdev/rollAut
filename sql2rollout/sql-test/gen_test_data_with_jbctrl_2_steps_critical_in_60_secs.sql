@@ -1,5 +1,5 @@
 
-use rollout;
+use rollAut;
 
 delete from rollout_step_type;
 delete from rollout_store;

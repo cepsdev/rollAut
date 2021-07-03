@@ -1,4 +1,4 @@
-use rollout;
+use rollAut;
 UPDATE rollout SET name = 'rollout-0' WHERE id = 100;
 UPDATE rollout SET name = 'rollout-1' WHERE id = 101;
 UPDATE rollout SET name = 'rollout-2' WHERE id = 102;
