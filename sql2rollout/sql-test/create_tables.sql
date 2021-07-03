@@ -1,4 +1,4 @@
-use rollout;
+use rollAut;
 drop table if exists rollout_store;
 drop table if exists rollout;
 drop table if exists rollout_step_type;
