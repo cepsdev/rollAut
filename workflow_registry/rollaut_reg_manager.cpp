@@ -58,7 +58,7 @@ bool rollaut::Registry_manager::message_read(
         std::string json;
         json.resize(len+1);
         strncpy((char*)json.data(),data,len);
-        //std::cerr << json << std::endl;
+        std::cerr << json << std::endl;
         rapidjson::Document msg;
         if (msg.Parse(json.data(),json.length()).HasParseError()) return true;
 

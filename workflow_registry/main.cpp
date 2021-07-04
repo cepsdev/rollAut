@@ -243,8 +243,8 @@ void rollaut::Rollout_executer::do_execute(monitoring::Node* rollout){
         exit(1);
     };
 
-    auto const &l = config["core_plugins"];
-    root_dir = config["root_folder"].GetString();
+
+    if (config.HasMember("root_folder"))  root_dir = config["root_folder"].GetString();
     if (root_dir.size() && root_dir[root_dir.size()-1]!='/') root_dir += "/";
     runs_dir = root_dir+"runs";
     rollout_dir = runs_dir + "/" + std::to_string(rollout->id)+"_"+std::to_string(rollout->revision_id);
@@ -266,8 +266,11 @@ void rollaut::Rollout_executer::do_execute(monitoring::Node* rollout){
     }
 
 
-    for(auto it = l.Begin();it!=l.End();++it){
-        plugins.push_back(it->GetString());
+    if (config.HasMember("core_plugins") && config["core_plugins"].IsArray()){
+        auto const &l = config["core_plugins"];
+        for(auto it = l.Begin();it!=l.End();++it){
+            plugins.push_back(it->GetString());
+        }
     }
 
     {
@@ -461,6 +464,7 @@ void rollaut::Rollout_executer::do_execute(monitoring::Node* rollout){
     int steps_per_store = 0;
 
     auto compute_coverage = [&](rapidjson::Document & msg){
+        std::cerr << "******** compute_coverage" << std::endl;
         if (sms2coverage.size() == 0) return 0.0;
 
         auto tpl_transition_cov = msg["toplevel_sms_transition_coverage"].GetArray();
@@ -505,6 +509,8 @@ void rollaut::Rollout_executer::do_execute(monitoring::Node* rollout){
       if (msg.Parse(s.data()).HasParseError()) continue;
       bool trigger_observers = false;
       bool reset_health = false;
+
+      std::cerr << "********* " << s << std::endl;
 
       if (msg.HasMember("what") && std::string{msg["what"].GetString()} == "init"){
           if (!smcores_entry_written){
