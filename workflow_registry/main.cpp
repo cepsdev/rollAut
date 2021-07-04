@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Copyright 2019 Tomas Prerovsky <tomas.prerovsky@ceps.technology>
 
@@ -91,8 +91,8 @@ namespace rollaut{
                  config_data << (char)ch;
              }
          }
-         if (config.Parse(config_data.str().data()).HasParseError())
-             throw config_failed{""};
+         if (config_data.str().size() && config.Parse(config_data.str().data()).HasParseError())
+             throw config_failed{"Invalid configuration file: rollaut.json illformed."};
 
          std::thread th{&Rollout_executer::do_observe,this};
          th.detach();

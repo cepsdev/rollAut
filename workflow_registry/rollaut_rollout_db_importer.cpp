@@ -346,7 +346,7 @@ void rollaut::Rollout_db_importer::do_observe(){
                     reg->trigger_observers(rollouts_folder);
                 r.second.unlock();
             }
-            this_thread::sleep_for(std::chrono::milliseconds{5000});
+            this_thread::sleep_for(std::chrono::milliseconds{50});
         }
     }
 }
