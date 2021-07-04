@@ -1,0 +1,4 @@
+{
+ "log_debug"     : true,
+ "xcore_plugins"  : ["libjob_check.so","libjenkins4ceps.so"] 
+}
