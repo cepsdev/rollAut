@@ -1,0 +1,9 @@
+{
+  "name": "wfregistry_test_client",
+  "version": "0.0.1",
+  "description": "",
+  "dependencies": {
+    "chalk": "^2.0.1",
+    "ws": "^3.1.0"
+  }
+}

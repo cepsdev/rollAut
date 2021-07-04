@@ -1,0 +1,5 @@
+{
+ "log_debug"     : false,
+ "core_plugins"  : ["libjob_check.so","libjenkins4ceps.so"],
+ "root_folder"   : "../sm4ceps/studies/mms_devops"
+}
