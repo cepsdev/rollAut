@@ -86,9 +86,8 @@
 
 <body style="padding-top: 70px;">
     <nav class="navbar navbar-expand-md  navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" style="color:white;" href="http://www.rollaut.org">
-              <sup>Roll<sub><span class="text-primary" style="font-size:20px;">A</span></sub>ut</sup>
-            </a>
+      <%-navbar.brand.html%>
+
             <h3 style="color:white;vertical-align:center;text-align:center;"></h3>
 
         <div class="collapse navbar-collapse">
@@ -115,14 +114,14 @@
                     min-height:3000px;"
 
         >
-          <h2 style="text-align: center;" >Scheduled Rollouts</h2>
+          <h2 style="text-align: center;" ><%=properties_ctrls.timeline_widget.title%></h2>
 
           <div class="form-group" style="padding-left: 4px;padding-right: 4px;">
              <label for="search_statemachines"></label>
                <input type="text" 
                   class="form-control" 
                   id="input_search_timeline" 
-                  aria-describedby="input_search_timeline" placeholder="Search Rollouts">
+                  aria-describedby="input_search_timeline" placeholder="Search">
                  <small id="input_search_timeline" class="form-text text-muted"></small>
           </div>
               <div id="info_tiles" 

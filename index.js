@@ -10,8 +10,11 @@ const dns = require("dns");
 const fs_mv = require("mv");
 const username = require("username");
 const host_name = os.hostname();
-
 const ceps_cmd_ = "./ceps";
+
+
+
+
 let fetch_rollouts_ceps_api_port_base = 10100;
 let fetch_rollouts_ceps_api_port = fetch_rollouts_ceps_api_port_base;
 let fetch_rollouts_ceps_api_port_window = 899;
@@ -31,6 +34,50 @@ const ROLLOUT_DONE = 5;
 const global_conf = require('./rollaut.json');
 const MAX_RECONNECTS_DURING_CEPS_SPAWN = 100;
 const DB_CHECK_INTERVAL_MS = 10000;
+
+function make_timestamp(){
+    function two_digits(n){
+        if (n < 10) return "0"+n.toString();
+        else return n.toString();
+    }
+
+    let t = new Date(Date.now());
+    let timestamp = `${t.getFullYear()}-${two_digits(t.getMonth()+1)}-${two_digits(t.getDate())} ${two_digits(t.getHours())}:${two_digits(t.getMinutes())}:${two_digits(t.getSeconds())}`;
+    return timestamp;
+}
+
+function log_info(who,msg){
+    console.log(`${make_timestamp()} [${who}] ${msg}`);
+}
+function log_err(who,msg){
+    console.log(chalk.red(`${make_timestamp()} [${who}] ${msg}`));
+}
+function log_debug(who,msg){
+    if (global_conf.log_debug != undefined && global_conf.log_debug) console.log(chalk.yellow(`${make_timestamp()} [${who}] ${msg}`));
+}
+
+
+
+properties_ctrls_timeline_widget = { title: "Scheduled Rollouts"};
+try{
+ properties_ctrls_timeline_widget = require("./config/widget/scheduled_rollouts.json");
+} catch (err) {
+ log_debug(`Config`,`No config/widget/scheduled_rollouts.json found => using defaults.`);
+}
+
+properties_navbar_brand = { html: `<a class="navbar-brand" style="color:white;" href="http://www.rollaut.org">
+        <sup>Roll<sub><span class="text-primary" style="font-size:20px;">A</span></sub>ut</sup>
+    </a>`};
+try{
+    properties_navbar_brand = require("./config/navbar/brand.json");
+} catch (err) {
+ log_debug(`Config`,`No config/navbar/brand.json found => using defaults.`);
+}
+
+
+
+
+
 
 
 let connections = [
@@ -247,7 +294,14 @@ app.get("/", function(req, res) {
     }
     else res.render("index",{ 
         server_name : host_name,
-        command_port : command_port  }
+        command_port : command_port,
+        properties_ctrls : {
+            timeline_widget : properties_ctrls_timeline_widget
+        },
+        navbar : {
+            brand : properties_navbar_brand
+        }
+      }
     );
 });
 
@@ -398,29 +452,6 @@ let fetch_planned_rollouts = function (back_channel,callback){
        setTimeout(fetch_proc,6000);
 }
 
-function make_timestamp(){
-    function two_digits(n){
-        if (n < 10) return "0"+n.toString();
-        else return n.toString();
-    }
-
-    let t = new Date(Date.now());
-    let timestamp = `${t.getFullYear()}-${two_digits(t.getMonth()+1)}-${two_digits(t.getDate())} ${two_digits(t.getHours())}:${two_digits(t.getMinutes())}:${two_digits(t.getSeconds())}`;
-    return timestamp;
-}
-
-function log_info(who,msg){
-    console.log(`${make_timestamp()} [${who}] ${msg}`);
-}
-function log_err(who,msg){
-    console.log(chalk.red(`${make_timestamp()} [${who}] ${msg}`));
-}
-function log_debug(who,msg){
-    if (global_conf.log_debug != undefined && global_conf.log_debug) console.log(chalk.yellow(`${make_timestamp()} [${who}] ${msg}`));
-//   fs.appendFileSync("log.txt",`${make_timestamp()} ${who} ${msg}
-//`);
-
-}
 
 const CEPS_INSTANCE_SPAWNING = 1;
 const CEPS_INSTANCE_EXITED   = 2;

@@ -226,7 +226,7 @@ function kill_store(store,rollout_id){
     </div>
     <div id = "running_rollout_overview_dlg_store_info" style="width:auto;margin:auto;float:right;">
      <div style="width:100%;height:100%;text-align:center;color:rgba(140,140,140,150);">
-     <h4 style="margin-top:150px;">Click on a workflow for full details.</h4></div>
+     <h4 style="margin-top:150px;">Click on item for full details.</h4></div>
     </div>
     </div>
     
@@ -235,7 +235,7 @@ function kill_store(store,rollout_id){
       <input type="text" 
                   class="form-control" 
                   id="rollout_overview_dlg_input_search_statemachines" 
-                  aria-describedby="search_statemachinesHelp" placeholder="Search Workflows">
+                  aria-describedby="search_statemachinesHelp" placeholder="Search">
        <small id="rollout_overview_dlg_search_statemachinesHelp" class="form-text text-muted"></small>
     </div>
 
