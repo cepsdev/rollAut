@@ -5,6 +5,7 @@ kind Systemstate;
 Event success;
 Event start_rollout;
 
+
 static_for(e:root.rollout){
  val rollout2worker_market_counter = 1;
  static_for(market:e.markets.content()){
@@ -80,20 +81,8 @@ static_for(e:root.rollout){
          states{Initial;JobQueued;TrackJob;};
          on_enter{
             as_symbol("timestamp_"+text(rollout2worker_market_counter),"Systemstate") = timestamp();
-            kind Parameter;
-            Parameter on_job_queued,option,command,url,parameters,
-                      hostname,port,job_name,authorization,on_success,on_error;
-            jenkins(
-                command                      = "build",
-                //option                     = "follow",
-                authorization                = env("ROLLAUT_JENKINS_AUTH"),
-                url                          = env("ROLLAUT_JENKINS_URL"),
-                job_name                     = jenkins_job_check_normal,
-                parameters                   = arguments_check_normal,
-                //on_success                 = job_finished_successfully_event,
-                on_error                     = as_symbol("ev_step_"+identification+"_failed","Event"),
-                on_success/*on_job_queued*/  = as_symbol("ev_check_"+identification+"_start_tracking","Event")
-            );
+           
+            start_timer(3.0*s,as_symbol("ev_check_"+identification+"_start_tracking","Event"));
          };
          Actions{
             do_track_job{
@@ -111,7 +100,9 @@ static_for(e:root.rollout){
                   on_success_code_is_not_zero  = as_symbol("small_step_"+identification,"Event"),
                   on_success_code_is_zero      = as_symbol("big_step_"+identification,"Event")
                 );
+                start_timer(5.0*s + __uniform_dist(5,20)*s,as_symbol("big_step_"+identification,"Event"));
             };
+            
          };
 
          t{Initial;JobQueued;as_symbol("ev_check_"+identification+"_start_tracking","Event");do_track_job;};
