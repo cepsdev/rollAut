@@ -1,3 +1,30 @@
+/*
+MIT License
+
+Copyright (c) 2021 Tomas Prerovsky
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+
+
+
 const WebSocket = require('ws');
 const os = require('os');
 const { spawn,execFile} = require('child_process');
@@ -57,6 +84,29 @@ function log_debug(who,msg){
 }
 
 
+///////////////////////////////////////////////////
+// Read configurations
+///////////////////////////////////////////////////
+
+config_general = { title: `RollAut`};
+try{
+    config_general = require("./config/general.json");
+} catch (err) {
+    log_debug(`Config`,`No config/general.json found => using defaults.`);
+}
+
+config_navbar_backendinfo = {
+    status :{
+        connected : "<span>Workflow Hub Online.</span>",
+        not_connected : "<div style=\"float:left;margin:2px;\" class=\"rollaut_connection_loader\"></div><span style=\"vertical-align: sub;\">Workflow Hub Offline.</span>"
+    }
+};
+
+try{
+    config_navbar_backendinfo = require("./config/navbar/backendinfo.json");
+} catch (err) {
+    log_debug(`Config`,`No config/config/navbar/backendinfo.json found => using defaults.`);
+}
 
 properties_ctrls_timeline_widget = { title: "Scheduled Rollouts"};
 try{
@@ -64,7 +114,6 @@ try{
 } catch (err) {
  log_debug(`Config`,`No config/widget/scheduled_rollouts.json found => using defaults.`);
 }
-
 properties_navbar_brand = { html: `<a class="navbar-brand" style="color:white;" href="http://www.rollaut.org">
         <sup>Roll<sub><span class="text-primary" style="font-size:20px;">A</span></sub>ut</sup>
     </a>`};
@@ -74,10 +123,7 @@ try{
  log_debug(`Config`,`No config/navbar/brand.json found => using defaults.`);
 }
 
-
-
-
-
+///////////////////////////////////////////////////
 
 
 let connections = [
@@ -299,7 +345,11 @@ app.get("/", function(req, res) {
             timeline_widget : properties_ctrls_timeline_widget
         },
         navbar : {
-            brand : properties_navbar_brand
+            brand       : properties_navbar_brand,
+            backend_info: config_navbar_backendinfo
+        },
+        page:{
+            title : config_general.title
         }
       }
     );

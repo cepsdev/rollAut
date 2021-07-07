@@ -81,7 +81,7 @@
 .material-icons.orange600 { color: #FB8C00; }
 
   </style>
-    <title>RollAut</title>
+    <title><%-page.title%></title>
 </head>
 
 <body style="padding-top: 70px;">
@@ -131,6 +131,7 @@
         </div>
         <div class="col-xs-1 col-sm-1 col-md-1"></div>        
     </div>
+   
   </main>
 
 <div class="modal" 
@@ -204,7 +205,7 @@ rollaut_search_utils_connect_search_box("input_search_timeline", () => {return t
       if(connection_info == undefined) return;
       connection_info.setAttribute("class","badge badge-success");
       connection_info.innerHTML =
-        `<span>Connected to Workflow Registry</span>`
+        `<%- navbar.backend_info.status.connected%>`
       ;
     }
  );
@@ -220,7 +221,7 @@ rollaut_search_utils_connect_search_box("input_search_timeline", () => {return t
       if(connection_info == undefined) return;
       connection_info.setAttribute("class","badge badge-danger");
       connection_info.innerHTML =
-        `<div style="float:left;margin:2px;" class="rollaut_connection_loader"></div><span style="vertical-align: sub;">Workflow Registry not available</span>`
+      `<%- navbar.backend_info.status.not_connected%>`
       ;          
     }
   );
