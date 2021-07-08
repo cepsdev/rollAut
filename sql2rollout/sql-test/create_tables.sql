@@ -7,14 +7,14 @@ drop table if exists rollout_fork_params;
 drop table if exists rollout_fork_job_recognition_suffix;
 
 create table rollout (
- id int NOT NULL AUTO_INCREMENT,
+ id int NOT NULL,
  name VARCHAR(255),
  start DATETIME,
  PRIMARY KEY (id)
 );
                        
 create table rollout_store (
- id int NOT NULL AUTO_INCREMENT,
+ id int NOT NULL,
  rollout INTEGER,
  name VARCHAR(255),
  sap_code VARCHAR(255),
@@ -22,7 +22,7 @@ create table rollout_store (
 );
                             
 create table rollout_step_type (
- id int NOT NULL AUTO_INCREMENT,
+ id int NOT NULL,
  description VARCHAR(255),
  job_check VARCHAR(511),
  job_run VARCHAR(511),
@@ -44,7 +44,7 @@ create table rollout_step_type (
 );
  
 create table rollout_step (
- id int NOT NULL AUTO_INCREMENT,
+ id int NOT NULL,
  step_type INTEGER,
  rollout INTEGER,
  sequence INTEGER,

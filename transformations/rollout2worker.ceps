@@ -82,7 +82,7 @@ static_for(e:root.rollout){
          on_enter{
             as_symbol("timestamp_"+text(rollout2worker_market_counter),"Systemstate") = timestamp();
            
-            start_timer(3.0*s,as_symbol("ev_check_"+identification+"_start_tracking","Event"));
+            start_timer(__uniform_dist(1,2)*s,as_symbol("ev_check_"+identification+"_start_tracking","Event"));
          };
          Actions{
             do_track_job{
@@ -100,7 +100,7 @@ static_for(e:root.rollout){
                   on_success_code_is_not_zero  = as_symbol("small_step_"+identification,"Event"),
                   on_success_code_is_zero      = as_symbol("big_step_"+identification,"Event")
                 );
-                start_timer(5.0*s + __uniform_dist(5,20)*s,as_symbol("big_step_"+identification,"Event"));
+                start_timer(__uniform_dist(1,5)*s,as_symbol("big_step_"+identification,"Event"));
             };
             
          };
